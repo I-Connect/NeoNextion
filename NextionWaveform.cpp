@@ -36,6 +36,46 @@ bool NextionWaveform::addValue(uint8_t channel, uint8_t value)
   return true;
 }
 
+bool NextionWaveform::addMultipleValues(uint8_t channel, uint8_t values[], int count) {
+  if (channel > 3)
+    return false;
+  size_t commandLen = 22;
+  char commandBuffer[commandLen];
+  snprintf(commandBuffer, commandLen, "addt %d,%d,%d", m_componentID, channel, count);
+  sendCommand(commandBuffer, false);
+
+  // now wait for ack
+  unsigned long start = millis();
+  while (start + 500 > millis()) {
+    if (checkCommandComplete(NEX_RET_TRANSPARENT_TRANSMIT_READY)) {
+      for (int i = 0; i < count; i++) {
+        sendRawByte(values[i]);
+      }
+      return true;
+    }
+  }
+  return false;
+}
+
+/*!
+* \brief Clears the data from the channel
+* \param channel Channel number, if 255 all data is cleared
+* \return True if successful
+*/
+bool NextionWaveform::clear(uint8_t channel) {
+  if (channel > 3)
+    channel = 255;
+    
+  size_t commandLen = 22;
+  char commandBuffer[commandLen];
+  snprintf(commandBuffer, commandLen, "cle %d,%d", m_componentID, channel);
+  sendCommand(commandBuffer, false);
+
+  /* TODO: this check still fails but the command does actually work */
+  /* return m_nextion.checkCommandComplete(); */
+  return true;
+}
+
 /*!
  * \brief Sets the colour of a channel.
  * \param channel Channel number

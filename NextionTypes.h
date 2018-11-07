@@ -25,7 +25,8 @@ enum NextionValue
   NEX_RET_INVALID_FONT_ID = (0x05),
   NEX_RET_INVALID_BAUD = (0x11),
   NEX_RET_INVALID_VARIABLE = (0x1A),
-  NEX_RET_INVALID_OPERATION = (0x1B)
+  NEX_RET_INVALID_OPERATION = (0x1B),
+  NEX_RET_TRANSPARENT_TRANSMIT_READY = (0xFE)
 };
 
 /*!
@@ -49,7 +50,7 @@ enum NextionBackground
   NEX_BG_NONE = -1,       //!< Undefined
   NEX_BG_CROPIMAGE = 0,   //!< Cropped image
   NEX_BG_SOLIDCOLOUR = 1, //!< Solid colour
-  NEW_BG_IMAGE = 2        //!< Full size image
+  NEW_BG_IMAGE = 2        //!< Full count image
 };
 
 /*!

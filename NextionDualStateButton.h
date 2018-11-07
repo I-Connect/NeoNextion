@@ -26,8 +26,11 @@ public:
       , INextionTouchable(nex, page, component, name)
       , INextionColourable(nex, page, component, name)
       , INextionBooleanValued(nex, page, component, name)
-  {
-  }
+  { }
+
+  virtual ~NextionDualStateButton()
+  { }
+
 };
 
 #endif

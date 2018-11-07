@@ -33,7 +33,7 @@ class Nextion
 public:
   Nextion(Stream &stream, bool flushSerialBeforeTx = true);
 
-  bool init();
+  virtual bool init(bool doReset = false);
   void poll();
 
   bool refresh();
@@ -63,12 +63,14 @@ public:
   bool drawCircle(uint16_t x, uint16_t y, uint16_t r, uint32_t colour);
 
   void registerTouchable(INextionTouchable *touchable);
-  void sendCommand(char *command);
-  bool checkCommandComplete();
+  void unregisterTouchable(INextionTouchable *touchable);
+  virtual void sendCommand(char *command);
+  void sendRawByte(uint8_t b);
+  virtual bool checkCommandComplete(uint8_t expectedValue = NEX_RET_CMD_FINISHED);
   bool receiveNumber(uint32_t *number);
   size_t receiveString(char *buffer, size_t len);
 
-private:
+protected:
   Stream &m_serialPort;       //!< Serial port device is attached to
   uint32_t m_timeout;         //!< Serial communication timeout in ms
   bool m_flushSerialBeforeTx; //!< Flush serial port before transmission

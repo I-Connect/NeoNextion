@@ -17,6 +17,7 @@ class INextionWidget
 public:
   INextionWidget(Nextion &nex, uint8_t page, uint8_t component,
                  const char *name);
+  virtual ~INextionWidget() { };
 
   uint8_t getPageID();
   uint8_t getComponentID();
@@ -28,7 +29,8 @@ public:
 
 protected:
   bool sendCommand(char *commandStr, bool checkComplete = true);
-
+  bool checkCommandComplete(uint8_t expectedValue = NEX_RET_CMD_FINISHED);
+  void sendRawByte(uint8_t b);
 protected:
   Nextion &m_nextion;    //!< Reference to the Nextion driver
   uint8_t m_pageID;      //!< ID of page this widget is on
