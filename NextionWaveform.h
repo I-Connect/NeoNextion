@@ -18,6 +18,8 @@ public:
                   const char *name);
 
   bool addValue(uint8_t channel, uint8_t value);
+  bool addMultipleValues(uint8_t channel, uint8_t values[], int count);
+  bool clear(uint8_t channel);
 
   bool setChannelColour(uint8_t channel, uint32_t colour, bool refresh = true);
   uint32_t getChannelColour(uint8_t channel);

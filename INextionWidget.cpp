@@ -79,6 +79,7 @@ bool INextionWidget::setStringProperty(char *propertyName, char *value)
   size_t commandLen = 7 + strlen(m_name) + strlen(propertyName) + strlen(value);
   char command[commandLen];
   snprintf(command, commandLen, "%s.%s=\"%s\"", m_name, propertyName, value);
+  //Serial.println(command);
   return sendCommand(command);
 }
 
@@ -101,6 +102,7 @@ size_t INextionWidget::getStringProperty(char *propertyName, char *value,
 
 bool INextionWidget::sendCommand(char *commandStr, bool checkComplete)
 {
+
   m_nextion.sendCommand(commandStr);
 
   if (checkComplete)
@@ -108,3 +110,10 @@ bool INextionWidget::sendCommand(char *commandStr, bool checkComplete)
   else
     return true;
 }
+void INextionWidget::sendRawByte(uint8_t b) {
+  m_nextion.sendRawByte(b);
+}
+
+bool INextionWidget::checkCommandComplete(uint8_t expectedValue) {
+  return m_nextion.checkCommandComplete(expectedValue);
+};

@@ -13,6 +13,10 @@ INextionTouchable::INextionTouchable(Nextion &nex, uint8_t page,
   nex.registerTouchable(this);
 }
 
+INextionTouchable::~INextionTouchable() {
+  m_nextion.unregisterTouchable(this);
+}
+
 /*!
  * \brief Processes a touch event.
  * \param pageID Page ID of touch event
@@ -23,6 +27,9 @@ INextionTouchable::INextionTouchable(Nextion &nex, uint8_t page,
 bool INextionTouchable::processEvent(uint8_t pageID, uint8_t componentID,
                                      uint8_t eventType)
 {
+  //Serial.println("INextionTouchable::processEvent");
+  //Serial.println(m_pageID);
+  //Serial.println(m_componentID);
   if (pageID != m_pageID)
     return false;
 
@@ -38,7 +45,7 @@ bool INextionTouchable::processEvent(uint8_t pageID, uint8_t componentID,
 
   case NEX_EVENT_POP:
     if (m_callback)
-      m_callback->handleNextionEvent((NextionEventType)eventType, this);
+    m_callback->handleNextionEvent((NextionEventType)eventType, this);
     return true;
 
   default:

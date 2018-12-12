@@ -21,11 +21,13 @@ Nextion::Nextion(Stream &stream, bool flushSerialBeforeTx)
  * \brief Initialises the device.
  * \return True if initialisation was successful.
  */
-bool Nextion::init()
+bool Nextion::init(bool doReset)
 {
-  sendCommand("");
-
-  sendCommand("bkcmd=1");
+  if (doReset) {
+    sendCommand("rest");
+    delay(2000);
+  }
+  sendCommand("bkcmd=1"); // only return successfull data
   bool result1 = checkCommandComplete();
 
   sendCommand("page 0");
@@ -334,37 +336,66 @@ void Nextion::registerTouchable(INextionTouchable *touchable)
   }
 }
 
+void Nextion::unregisterTouchable(INextionTouchable * touchable) {
+  ITouchableListItem *prevItem = NULL;
+  ITouchableListItem *currentItem = m_touchableList;
+  while (currentItem) {
+    if (currentItem->item == touchable) {
+      if (prevItem) {
+        prevItem->next = currentItem->next;
+      } else {
+        m_touchableList = currentItem->next;
+      }
+      delete currentItem;
+      break;
+    }
+    prevItem = currentItem;
+    currentItem = currentItem->next;
+  }
+}
+
 /*!
  * \brief Sends a command to the device.
  * \param command Command to send
  */
 void Nextion::sendCommand(char *command)
 {
+  if (command == "") {
+    return;
+  }
+
   if (m_flushSerialBeforeTx)
     m_serialPort.flush();
 
+//  log_d(">>>>send Nx cmd: '%s'",command);
   m_serialPort.print(command);
   m_serialPort.write(0xFF);
   m_serialPort.write(0xFF);
   m_serialPort.write(0xFF);
 }
 
+void Nextion::sendRawByte(uint8_t b) {
+  m_serialPort.write(b);
+}
+
 /*!
- * \brief Checks if the last command was successful.
+ * \brief Checks if the last command was successful, meaning the expectedvalue followed by 0xFF0xFF0xFF is returned.
  * \return True if command was successful
  */
-bool Nextion::checkCommandComplete()
+bool Nextion::checkCommandComplete(uint8_t expectedValue)
 {
   bool ret = false;
   uint8_t temp[4] = {0};
 
-  if (sizeof(temp) != m_serialPort.readBytes((char *)temp, sizeof(temp)))
+  uint8_t rb = m_serialPort.readBytes((char *)temp, sizeof(temp));
+  log_v("read bytes=%d", rb);
+  if (sizeof(temp) != rb) {
     ret = false;
-
-  if (temp[0] == NEX_RET_CMD_FINISHED && temp[1] == 0xFF && temp[2] == 0xFF &&
-      temp[3] == 0xFF)
+  } else if (temp[0] == expectedValue && temp[1] == 0xFF && temp[2] == 0xFF && temp[3] == 0xFF) {
     ret = true;
-
+  }
+  log_v("received value %02x %02x %02x %02x", temp[0], temp[1], temp[2], temp[3]);
+  log_v("return %d", ret);
   return ret;
 }
 

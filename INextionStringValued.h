@@ -6,6 +6,8 @@
 #include "Nextion.h"
 #include "INextionWidget.h"
 #include "NextionTypes.h"
+#include "stdio.h"
+#include "sscanf.h"
 
 /*!
  * \class INextionStringValued
@@ -57,7 +59,7 @@ public:
   bool setTextAsNumber(uint32_t value)
   {
     char buffer[8];
-    snprintf(buffer, 8, "%ld", value);
+    snprintf(buffer, 8, "%d", value);
     return setStringProperty("txt", buffer);
   }
 
@@ -72,7 +74,7 @@ public:
     if (getStringProperty("txt", buffer, 8))
     {
       uint32_t value;
-      sscanf(buffer, "%ld", &value);
+      sscanf(buffer, "%d", &value);
       return value;
     }
     else
