@@ -210,6 +210,8 @@ int vsscanf (const char *buf, const char *s, va_list ap){
             base = 8;
         else if (*s == 'b')
             base = 2;
+        else
+          return 0;
         if (!width) {
             if (isspace (*(s + 1)) || *(s + 1) == 0)
             width = strcspn (buf, ISSPACE);
