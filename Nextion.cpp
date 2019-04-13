@@ -178,7 +178,7 @@ bool Nextion::clear(uint32_t colour)
 {
   size_t commandLen = 9;
   char commandBuffer[commandLen];
-  snprintf(commandBuffer, commandLen, "cls %ld", colour);
+  snprintf(commandBuffer, commandLen, "cls %d", colour);
   sendCommand(commandBuffer);
   return checkCommandComplete();
 }
@@ -241,7 +241,7 @@ bool Nextion::drawStr(uint16_t x, uint16_t y, uint16_t w, uint16_t h,
 {
   size_t commandLen = 65 + strlen(str);
   char commandBuffer[commandLen];
-  snprintf(commandBuffer, commandLen, "xstr %d,%d,%d,%d,%d,%ld,%ld,%d,%d,%d,%s",
+  snprintf(commandBuffer, commandLen, "xstr %d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%s",
            x, y, w, h, fontID, fgColour, bgColour, xCentre, yCentre, bgType,
            str);
   sendCommand(commandBuffer);
@@ -262,7 +262,7 @@ bool Nextion::drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2,
 {
   size_t commandLen = 35;
   char commandBuffer[commandLen];
-  snprintf(commandBuffer, commandLen, "line %d,%d,%d,%d,%ld", x1, y1, x2, y2,
+  snprintf(commandBuffer, commandLen, "line %d,%d,%d,%d,%d", x1, y1, x2, y2,
            colour);
   sendCommand(commandBuffer);
   return checkCommandComplete();
@@ -284,10 +284,10 @@ bool Nextion::drawRect(uint16_t x, uint16_t y, uint16_t w, uint16_t h,
   size_t commandLen = 35;
   char commandBuffer[commandLen];
   if (filled)
-    snprintf(commandBuffer, commandLen, "draw %d,%d,%d,%d,%ld", x, y, x + w,
+    snprintf(commandBuffer, commandLen, "draw %d,%d,%d,%d,%d", x, y, x + w,
              y + h, colour);
   else
-    snprintf(commandBuffer, commandLen, "fill %d,%d,%d,%d,%ld", x, y, w, h,
+    snprintf(commandBuffer, commandLen, "fill %d,%d,%d,%d,%d", x, y, w, h,
              colour);
   sendCommand(commandBuffer);
   return checkCommandComplete();
@@ -305,7 +305,7 @@ bool Nextion::drawCircle(uint16_t x, uint16_t y, uint16_t r, uint32_t colour)
 {
   size_t commandLen = 27;
   char commandBuffer[commandLen];
-  snprintf(commandBuffer, commandLen, "cir %d,%d,%d,%ld", x, y, r, colour);
+  snprintf(commandBuffer, commandLen, "cir %d,%d,%d,%d", x, y, r, colour);
   sendCommand(commandBuffer);
   return checkCommandComplete();
 }
@@ -360,7 +360,7 @@ void Nextion::unregisterTouchable(INextionTouchable * touchable) {
  */
 void Nextion::sendCommand(char *command)
 {
-  if (command == "") {
+  if (strcmp(command, "") == 0) {
     return;
   }
 
@@ -449,7 +449,7 @@ size_t Nextion::receiveString(char *buffer, size_t len)
       char c = m_serialPort.read();
       if (have_header_flag)
       {
-        if (c == 0xFF || c == 0xFFFFFFFF)
+        if (c == 0xFF)
         {
           flag_count++;
           if (flag_count >= 3)
