@@ -31,6 +31,8 @@
 
 #include "sscanf.h"
 
+#ifndef ESP32
+
 #define MAXLN 200
 // http://web.mit.edu/10.001/Web/Course_Notes/c_Notes/tips_printf.html
 /*alert (beep) \a
@@ -248,3 +250,5 @@ int sscanf (const char *buf, const char *fmt, ...){
     va_end (ap);
     return (count);
 }
+
+#endif

@@ -1,6 +1,7 @@
 #ifndef SSCANF_H
 #define SSCANF_H
 
+#ifndef ESP32
 #include <cstdio>
 #include <cstdarg>
 #include <cstring>
@@ -15,5 +16,7 @@ int _atob (uint32_t *, char *, int);
 int atob(uint32_t *, char *, int);
 int vsscanf (const char *, const char *, va_list);
 int sscanf (const char *, const char *, ...);
+
+#endif
 
 #endif
