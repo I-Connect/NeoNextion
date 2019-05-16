@@ -360,7 +360,7 @@ void Nextion::unregisterTouchable(INextionTouchable * touchable) {
  */
 void Nextion::sendCommand(char *command)
 {
-  if (command == "") {
+  if (strcmp(command, "") == 0) {
     return;
   }
 
