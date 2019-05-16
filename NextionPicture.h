@@ -8,7 +8,7 @@
 
 /*!
  * \class NextionPicture
- * \brief Represents a full size picture widget.
+ * \brief Represents a full count picture widget.
  */
 class NextionPicture : public INextionTouchable
 {

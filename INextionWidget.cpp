@@ -46,7 +46,7 @@ bool INextionWidget::setNumberProperty(char *propertyName, uint32_t value)
 {
   size_t commandLen = 8 + strlen(m_name) + strlen(propertyName);
   char commandBuffer[commandLen];
-  snprintf(commandBuffer, commandLen, "%s.%s=%ld", m_name, propertyName, value);
+  snprintf(commandBuffer, commandLen, "%s.%s=%d", m_name, propertyName, value);
   return sendCommand(commandBuffer);
 }
 
