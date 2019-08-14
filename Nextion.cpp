@@ -18,15 +18,15 @@ Nextion::Nextion(Stream &stream, bool flushSerialBeforeTx)
 }
 
 /*!
- * \brief Initialises the device.
+ * \brief Initialises the device. 
  * \return True if initialisation was successful.
  */
 bool Nextion::init(bool doReset)
 {
   if (doReset) {
     sendCommand("rest");
-    delay(2000);
   }
+  delay(2000);
   sendCommand("bkcmd=1"); // only return successfull data
   bool result1 = checkCommandComplete();
 
