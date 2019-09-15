@@ -27,7 +27,7 @@ bool Nextion::init(bool doReset)
     sendCommand("rest");
   }
   delay(2000);
-  sendCommand("bkcmd=1"); // only return successfull data
+  sendCommand("bkcmd=0"); // never return data on command
   bool result1 = checkCommandComplete();
 
   sendCommand("page 0");
