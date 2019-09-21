@@ -76,9 +76,20 @@ uint32_t INextionWidget::getNumberProperty(char *propertyName)
  */
 bool INextionWidget::setStringProperty(char *propertyName, char *value)
 {
-  size_t commandLen = 7 + strlen(m_name) + strlen(propertyName) + strlen(value);
+   // Escape double quote characters
+  char patchedValue[strlen(value)*2] ={0};
+  int idx = 0;
+  for (auto i = 0; i < strlen(value); i++ ) {
+      if (value[i] == '"') {
+          patchedValue[idx++] = '\\';
+          patchedValue[idx++] = value[i];
+      } else {
+          patchedValue[idx++] = value[i];
+      }
+  }
+  size_t commandLen = 7 + strlen(m_name) + strlen(propertyName) + strlen(patchedValue);
   char command[commandLen];
-  snprintf(command, commandLen, "%s.%s=\"%s\"", m_name, propertyName, value);
+  snprintf(command, commandLen, "%s.%s=\"%s\"", m_name, propertyName, patchedValue);
   //Serial.println(command);
   return sendCommand(command);
 }
