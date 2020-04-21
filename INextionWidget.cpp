@@ -77,7 +77,7 @@ uint32_t INextionWidget::getNumberProperty(char *propertyName)
 bool INextionWidget::setStringProperty(char *propertyName, char *value)
 {
    // Escape double quote characters
-  char patchedValue[strlen(value)*2] ={0};
+  char patchedValue[strlen(value)*2+1] ={0};
   int idx = 0;
   for (auto i = 0; i < strlen(value); i++ ) {
       if (value[i] == '"') {
