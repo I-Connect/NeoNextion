@@ -30,7 +30,7 @@ bool Nextion::init(bool doReset)
   sendCommand("bkcmd=0"); // never return data on command
   bool result1 = checkCommandComplete();
 
-  sendCommand("page 0");
+  // sendCommand("page 0");
   bool result2 = checkCommandComplete();
 
   return (result1 && result2);
