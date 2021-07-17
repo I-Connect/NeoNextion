@@ -95,6 +95,20 @@ bool INextionWidget::setStringProperty(char *propertyName, char *value)
 }
 
 /*!
+ * \brief Sets the visibiliy of this widget.
+ * \param visible true to show, false to hide
+ * \return True if successful
+ */
+bool INextionWidget::setVisible(bool visible)
+{
+  size_t commandLen = 7 + strlen(m_name);
+  char command[commandLen];
+  snprintf(command, commandLen, "vis %s,%d", m_name, visible);
+  //Serial.println(command);
+  return sendCommand(command);
+}
+
+/*!
  * \brief Gets the value of a string property of this widget.
  * \param propertyName Name of the property
  * \param value Pointer to char array to store result in

@@ -26,6 +26,7 @@ public:
   uint32_t getNumberProperty(char *propertyName);
   bool setStringProperty(char *propertyName, char *value);
   size_t getStringProperty(char *propertyName, char *value, size_t len);
+  bool setVisible(bool visible);
 
 protected:
   bool sendCommand(char *commandStr, bool checkComplete = true);
